@@ -1,0 +1,64 @@
+
+/* 
+    Created on : Jun 27, 2022, 1:44:02 PM
+    Author     : Apon
+*/
+
+.menu-top.toplevel_page_uttara-gadget img {
+    max-width: 18px;
+    opacity: 1 !important;
+    filter: grayscale(100%);
+}
+.menu-top.toplevel_page_uttara-gadget.wp-has-current-submenu img, .menu-top.toplevel_page_uttara-gadget:hover img  {
+    filter: grayscale(0%);
+}
+
+/*BOX*/
+.overview {
+    display: flex;
+    padding: 20px 20px;
+    background: #f0f0f1;
+    margin-bottom: 20px;
+    position: absolute;
+    width: calc(100% + 20px);
+    left: -20px;
+    top: 0;
+    box-sizing: border-box;
+}
+
+.box .box-icon {
+    padding: 20px;
+    background: rgba(0,0,0,.1);
+    color: #fff;
+    width: 80px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box {
+    flex-basis: 18%;
+    background: #15afd2;
+    display: flex;
+    align-items: center;
+    margin-right: 2%;
+    flex-grow: 1;
+}
+.box:last-child {
+    margin-right: 0;
+}
+.box-title {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+}
+.box-title .counter {
+    font-size: 28px;
+    color: #fff;
+    display: block;
+}
+.box-title label {
+    font-size: 16px;
+    margin-top: 10px;
+    color: #fff;
+}

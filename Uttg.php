@@ -14,7 +14,10 @@ namespace Aponahmed\Uttaragedget;
 
 use Aponahmed\Uttaragedget\src\AdminController;
 use Aponahmed\Uttaragedget\src\Frontend;
+use Aponahmed\Uttaragedget\src\Init;
 
+define('__UTTG_DIR', dirname(__FILE__));
+define('__UTTG_ASSETS', plugin_dir_url(__FILE__) . "assets/");
 //Autoloader 
 require 'vendor/autoload.php';
 
@@ -30,6 +33,7 @@ class Uttg {
     private object $FrontEnd;
 
     public function __construct() {
+        register_activation_hook(__FILE__, [Init::class, 'active_plugin']);
         //Global Ajax Hook
         $this->ajaxHookInit();
         //Init Admin And Frontend Controller
@@ -54,4 +58,5 @@ class Uttg {
 
 }
 
-Uttg::init();
+$UTTG = Uttg::init();
+//var_dump($UTTG);
