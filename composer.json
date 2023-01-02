@@ -14,5 +14,17 @@
             "email": "apon2041@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "google/apiclient": "^2.12.1",
+        "phpmailer/phpmailer": "^6.5"
+    },
+    "scripts": {
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup"
+    },
+    "extra": {
+        "google/apiclient-services": [
+            "Gmail"
+        ]
+    },
+    "platform-check": false
 }

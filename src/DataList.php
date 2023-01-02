@@ -7,7 +7,8 @@ namespace Aponahmed\Uttaragedget\src;
  *
  * @author Mahabub
  */
-class DataList {
+class DataList
+{
 
     /**
      * Custom Table Name
@@ -29,8 +30,10 @@ class DataList {
      */
     public array $filter;
 
-    public function __construct($table) {
-        $this->table = $table;
+    public function __construct($table)
+    {
+        global $wpdb;
+        $this->table = $wpdb->prefix . $table;
         $this->columns = [];
         $this->filter = [];
     }
@@ -39,11 +42,13 @@ class DataList {
      * Set Data table's Visible Column
      * @param array $column
      */
-    public function setColumn(array $column) {
+    public function setColumn(array $column)
+    {
         $this->columns = $column;
     }
 
-    public function generateThead() {
+    public function generateThead()
+    {
         if (count($this->columns) > 0) {
             $htm = "<thead><tr>";
             foreach ($this->columns as $key => $val) {
@@ -54,11 +59,11 @@ class DataList {
         }
     }
 
-    public function get() {
+    public function get()
+    {
         $tt = '<table class="wp-list-table widefat fixed striped table-view-list posts">';
         $tt .= $this->generateThead();
         $tt .= '</table>';
         return $tt;
     }
-
 }

@@ -7,13 +7,16 @@ namespace Aponahmed\Uttaragedget\src;
  *
  * @author Mahabub
  */
-class CustomerController {
+class CustomerController
+{
 
     //put your code here
-    public static function customerList() {
-        ?>
+    public static function customerList()
+    {
+?>
         <div class="wrap">
-            <h1 class="wp-heading-inline">Manage Customer</h1><hr>
+            <h1 class="wp-heading-inline">Manage Customer</h1>
+            <hr>
             <?php
             $dataList = new DataList('customer');
             $dataList->setColumn([
@@ -22,9 +25,8 @@ class CustomerController {
                 'mobile' => 'Mobile Number'
             ]);
             echo $dataList->get();
-            ?> 
+            ?>
         </div>
-        <?php
+<?php
     }
-
 }

@@ -1,6 +1,10 @@
-
 /* 
     Created on : Jun 27, 2022, 1:43:44 PM
     Author     : apon
 */
+/*css variable declaration*/
 
+:root {
+    --primary-color: #9d0b0b;
+    --secondery-color: #205aa4;
+}
