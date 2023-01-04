@@ -16,6 +16,7 @@ use Aponahmed\Uttaragedget\src\AdminController;
 use Aponahmed\Uttaragedget\src\Frontend;
 use Aponahmed\Uttaragedget\src\Init;
 use Aponahmed\Uttaragedget\src\Contact;
+use Aponahmed\Uttaragedget\src\InvoiceController;
 
 define('__UTTG_DIR', dirname(__FILE__));
 define('__UTTG_ASSETS', plugin_dir_url(__FILE__) . "assets/");
@@ -33,6 +34,7 @@ class Uttg
     private object $AdminController;
     private object $FrontEnd;
     public $contactSystem;
+    public $invoice;
 
     public function __construct()
     {
@@ -40,6 +42,7 @@ class Uttg
         //Global Ajax Hook
         $this->ajaxHookInit();
         $this->contactSystem = new Contact();
+        $this->invoice = new InvoiceController();
         //Init Admin And Frontend Controller
         if (is_admin()) {
             $this->AdminController = new AdminController();

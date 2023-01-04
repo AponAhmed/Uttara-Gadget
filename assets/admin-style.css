@@ -1,4 +1,3 @@
-
 /* 
     Created on : Jun 27, 2022, 1:44:02 PM
     Author     : Apon
@@ -9,7 +8,9 @@
     opacity: 1 !important;
     filter: grayscale(100%);
 }
-.menu-top.toplevel_page_uttara-gadget.wp-has-current-submenu img, .menu-top.toplevel_page_uttara-gadget:hover img  {
+
+.menu-top.toplevel_page_uttara-gadget.wp-has-current-submenu img,
+.menu-top.toplevel_page_uttara-gadget:hover img {
     filter: grayscale(0%);
 }
 
@@ -28,7 +29,7 @@
 
 .box .box-icon {
     padding: 20px;
-    background: rgba(0,0,0,.1);
+    background: rgba(0, 0, 0, .1);
     color: #fff;
     width: 80px;
     box-sizing: border-box;
@@ -36,6 +37,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .box {
     flex-basis: 18%;
     background: #15afd2;
@@ -44,21 +46,170 @@
     margin-right: 2%;
     flex-grow: 1;
 }
+
 .box:last-child {
     margin-right: 0;
 }
+
 .box-title {
     display: flex;
     flex-direction: column;
     padding-left: 10px;
 }
+
 .box-title .counter {
     font-size: 28px;
     color: #fff;
     display: block;
 }
+
 .box-title label {
     font-size: 16px;
     margin-top: 10px;
     color: #fff;
 }
+
+/*poPUP cSS */
+.popup-wrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.popup-body {
+    background: linear-gradient(170deg, rgba(255, 255, 255, .4) 40%, rgba(217, 217, 217, .9));
+    max-width: 100vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 400px;
+    padding: 40px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    max-height: 100%;
+    backdrop-filter: blur(8.8px);
+    box-shadow: 1px 2px 15px rgba(0, 0, 0, .1);
+}
+
+.popup-body .popup-inner {
+    overflow: hidden;
+    overflow-y: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 80px);
+    padding: 4px;
+    scrollbar-color: #d5d5d5 #ededed;
+    scrollbar-width: thin;
+}
+
+.popup-body .closePopup {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    line-height: 0;
+    font-size: 35px;
+    font-weight: 300;
+    color: #ff6565;
+    cursor: pointer;
+    padding: 16px 10px;
+}
+
+.popup-body .closePopup::after {
+    content: "";
+    width: 20px;
+    height: 1px;
+    background: #f22;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.popup-body .closePopup::before {
+    content: "";
+    width: 20px;
+    height: 1px;
+    background: #f22;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/** Custom Loader **/
+.working::after {
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: #04adff;
+    display: block;
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    animation-duration: 0.6s;
+    animation-name: leftRight;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate;
+}
+
+.working::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: #f27777;
+    display: block;
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    animation-duration: 0.6s;
+    animation-name: rightLeft;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate;
+}
+
+.working {
+    width: 25px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 22px;
+}
+
+@keyframes leftRight {
+    from {
+        transform: translate(0);
+    }
+
+    to {
+        transform: translate(20px);
+    }
+}
+
+@keyframes rightLeft {
+    from {
+        transform: translate(20px);
+    }
+
+    to {
+        transform: translate(0);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .popup-body {
+        top: 0;
+        left: 0;
+        transform: translate(0, 0);
+        height: 100%;
+        border: 0;
+        border-radius: 0;
+    }
+}
+
+/*eND OF pOPUP*/

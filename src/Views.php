@@ -11,6 +11,7 @@ class Views {
 
     //put your code here
     public static function adminMainView() {
+        
         ?>
         <div class="utatra-gadget">
             <div class="overview">

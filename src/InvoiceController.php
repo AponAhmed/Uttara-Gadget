@@ -9,25 +9,41 @@ use Aponahmed\Uttaragedget\src\DataList;
  *
  * @author Mahabub
  */
-class InvoiceController {
-
-    //put your code here
-
-    public static function invoiceList() {
-        ?>
-        <div class="wrap">
-            <h1 class="wp-heading-inline">Invoice List</h1><hr>
-            <?php
-            $dataList = new DataList('invoice');
-            $dataList->setColumn([
-                'id' => "ID",
-                'invoice_number' => 'Invoice #',
-                'customer' => 'Customer Name'
-            ]);
-            echo $dataList->get();
-            ?> 
-        </div>
-        <?php
+class InvoiceController
+{
+    public function __construct()
+    {
+        add_action('wp_ajax_new-invoice', [$this, 'create_new_invoice']);
     }
 
+
+    function create_new_invoice()
+    {
+        echo "sadfsdf";
+        wp_die();
+    }
+
+    public static function invoiceList()
+    {
+?>
+        <div class="wrap">
+            <h1 class="wp-heading-inline">Invoice List <a data-w="900" href="new-invoice" class="button button-primary popup">New</a></h1>
+            <hr>
+            <?php
+            $dataList = new DataList('sales');
+            $dataList->setColumn([
+                'id' => "Invoice#",
+                'customer_id' => 'Customer',
+                'sales_value' => 'Value'
+            ]);
+            $dataList->getData();
+            echo $dataList->get();
+            ?>
+        </div>
+        <script>
+            new Popup(jQuery);
+        </script>
+
+<?php
+    }
 }
