@@ -32,23 +32,29 @@ class DataList
      * @var array
      */
     public array $filter;
+    private $page = '';
 
     public int $currentPage = 1;
-    public int $itemPerPage = 1;
+    public int $itemPerPage = 15;
+    public int $totalItems = 0;
+    public int $totalPages = 0;
     private $offset = 0;
     private $conditionStr = "1";
 
     public $conditions = [];
     private $data;
 
-    public function __construct($table)
+    public function __construct($table = '', $pageUrl = '', $itemPerPage = 15)
     {
         global $wpdb;
         $this->db = $wpdb;
         $this->table = $wpdb->prefix . $table;
+        $this->page = $pageUrl;
         $this->columns = [];
         $this->filter = [];
 
+
+        $this->itemPerPage = $itemPerPage;
         if (isset($_GET['paged']) && !empty($_GET['paged'])) {
             $this->currentPage = intval($_GET['paged']);
             $this->offset = ($this->currentPage - 1) * $this->itemPerPage;
@@ -66,11 +72,14 @@ class DataList
 
     function conditionBuilder()
     {
+        $conditionStrArr = [];
         if (count($this->conditions) > 0) {
             foreach ($this->conditions as $key => $value) {
-                $this->conditionStr .= $value[0] . $value[1] . $value[2];
+                //var_dump($value);
+                $conditionStrArr[] .= $value[0] . $value[1] . $value[2];
             }
         }
+        $this->conditionStr = implode(" AND ", $conditionStrArr);
     }
 
     /**
@@ -78,9 +87,41 @@ class DataList
      */
     public function getData()
     {
-        $this->data = $this->db->get_results("SELECT $this->selectedFields FROM $this->table WHERE $this->conditionStr ORDER BY $this->primary_key DESC LIMIT $this->offset,$this->itemPerPage");
+        $this->conditionBuilder();
+        $sql = "SELECT $this->selectedFields FROM $this->table WHERE $this->conditionStr ORDER BY $this->primary_key DESC LIMIT $this->offset,$this->itemPerPage";
+
+        var_dump($sql);
+        $this->data = $this->db->get_results($sql);
     }
 
+    /**
+     * Paginations for Data Table
+     */
+    public function paginate()
+    {
+        $this->conditionBuilder();
+        $this->totalItems = $this->db->get_var("SELECT COUNT(*) as total FROM $this->table WHERE $this->conditionStr");
+
+        if ($this->totalItems > 0 && $this->totalItems > $this->itemPerPage) {
+            $this->totalPages = ceil($this->totalItems / $this->itemPerPage);
+        } else {
+            $this->totalPages = 1;
+        }
+
+        $htm = "<div class=\"data-pagination\">";
+        if ($this->totalPages > 1) {
+            for ($i = 1; $i <= $this->totalPages; $i++) {
+                $link = "admin.php?page=$this->page&paged=$i";
+                $clas = "";
+                if ($this->currentPage == $i) {
+                    $clas = 'class="active"';
+                }
+                $htm .= "<a $clas href=\"$link\">$i</a>";
+            }
+        }
+        $htm .= "</div>";
+        return $htm;
+    }
     /**
      * Generate Table Header
      */

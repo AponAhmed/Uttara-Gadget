@@ -213,3 +213,26 @@
 }
 
 /*eND OF pOPUP*/
+
+
+/*Data List*/
+
+.data-pagination {
+    display: flex;
+    margin-top: 10px;
+}
+
+.data-pagination a {
+    padding: 4px 8px;
+    margin-right: 5px;
+    background: #ddd;
+    text-decoration: none;
+    border: 1px solid #979797;
+    border-radius: 4px;
+}
+
+.data-pagination a.active {
+    background: #2271b1;
+    color: #fff;
+    border-color: #0c406a;
+}

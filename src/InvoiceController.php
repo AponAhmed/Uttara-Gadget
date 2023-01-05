@@ -30,14 +30,18 @@ class InvoiceController
             <h1 class="wp-heading-inline">Invoice List <a data-w="900" href="new-invoice" class="button button-primary popup">New</a></h1>
             <hr>
             <?php
-            $dataList = new DataList('sales');
+            $dataList = new DataList('sales', 'invoice', 1);
             $dataList->setColumn([
                 'id' => "Invoice#",
                 'customer_id' => 'Customer',
                 'sales_value' => 'Value'
             ]);
+            $dataList->conditions = [
+                ['id', ">", 0]
+            ];
             $dataList->getData();
             echo $dataList->get();
+            echo $dataList->paginate();
             ?>
         </div>
         <script>
