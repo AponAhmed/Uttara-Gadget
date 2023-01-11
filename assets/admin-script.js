@@ -28,9 +28,11 @@ class Popup {
                 if (w) {
                     ccs = "width:" + w + "px";
                 }
+                //console.log(el.dataset);
                 let data = {
                     'action': url
                 };
+                Object.assign(data, el.dataset);
                 jQuery.post(ajax_object.ajax_url, data, function (response) {
                     // handle success
                     _this.dom.html(_this.domExistingHtml);

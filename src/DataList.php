@@ -40,9 +40,11 @@ class DataList
     public int $totalPages = 0;
     private $offset = 0;
     private $conditionStr = "1";
+    public $actions = [];
 
     public $conditions = [];
     private $data;
+
 
     public function __construct($table = '', $pageUrl = '', $itemPerPage = 15)
     {
@@ -59,6 +61,32 @@ class DataList
             $this->currentPage = intval($_GET['paged']);
             $this->offset = ($this->currentPage - 1) * $this->itemPerPage;
         }
+        $this->actions = [
+            'edit' => [
+                'label' => 'Edit',
+                'atts' => [
+                    'class' => 'edit popup',
+                    'href' => "new-$pageUrl",
+                    'data-id' => "%id",
+                ]
+            ],
+            'delete' => [
+                'label' => 'Delete',
+                'atts' => [
+                    'class' => 'delete-data',
+                    'href' => "javascript:void(0)",
+                    'data-id' => "%id",
+                    'data-type' => $pageUrl,
+                    'onclick' => 'deleteData(this)'
+                ]
+
+            ],
+        ];
+    }
+
+    function addAction($key, $action)
+    {
+        $this->actions[$key] = $action;
     }
 
     /**
@@ -89,8 +117,7 @@ class DataList
     {
         $this->conditionBuilder();
         $sql = "SELECT $this->selectedFields FROM $this->table WHERE $this->conditionStr ORDER BY $this->primary_key DESC LIMIT $this->offset,$this->itemPerPage";
-
-        var_dump($sql);
+        //var_dump($sql);
         $this->data = $this->db->get_results($sql);
     }
 
@@ -132,9 +159,35 @@ class DataList
             foreach ($this->columns as $key => $val) {
                 $htm .= "<th>$val</th>";
             }
+            if (count($this->actions) > 0) {
+                $htm .= "<th></th>";
+            }
             $htm .= "</tr></thead>";
             return $htm;
         }
+    }
+
+    function actions($data)
+    {
+        $htm = "<div class=\"data-actions\">";
+        foreach ($this->actions as $action) {
+
+            $atts = isset($action['atts']) ? $action['atts'] : [];
+            foreach ($data as $key => $val) {
+                foreach ($atts  as $param => $pval) {
+                    $atts[$param] = str_replace("%$key", $val, $pval);
+                }
+            }
+
+            $attsArr = [];
+            foreach ($atts as $name => $val) {
+                $attsArr[] = "$name=\"$val\"";
+            }
+            $attsStr = implode(" ", $attsArr);
+            $htm .= "<a $attsStr >$action[label]</a>";
+        }
+        $htm .= "</div>";
+        return $htm;
     }
 
     public function generateTbody()
@@ -146,6 +199,11 @@ class DataList
                 foreach ($this->columns as $key => $val) {
                     $value = $row->$key;
                     $htm .= "<td title=\"$val\">$value</td>";
+                }
+                if (count($this->actions) > 0) {
+                    $htm .= "<td title=\"Actions\">";
+                    $htm .= $this->actions($row);
+                    $htm .= "</td>";
                 }
                 $htm .= "</tr>";
             }

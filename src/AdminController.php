@@ -30,6 +30,7 @@ class AdminController
     {
         //if (strpos($hook, 'uttara') !== false) {
         wp_enqueue_style('uttg-admin-style', __UTTG_ASSETS . 'admin-style.css');
+        wp_enqueue_style('uttg-admin-column', __UTTG_ASSETS . 'column.css');
         wp_enqueue_script('uttg-admin-script', __UTTG_ASSETS . 'admin-script.js', array('jquery'), '1.0');
         wp_localize_script('uttg-admin-script', 'uttg', array('ajax_url' => admin_url('admin-ajax.php')));
         //}
