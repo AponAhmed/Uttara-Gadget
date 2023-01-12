@@ -14,6 +14,7 @@ class InvoiceController
     public function __construct()
     {
         add_action('wp_ajax_new-invoice', [$this, 'create_new_invoice']);
+        
     }
 
 
@@ -95,7 +96,7 @@ class InvoiceController
     {
     ?>
         <div class="wrap">
-            <h1 class="wp-heading-inline">Invoice List <a data-w="900" href="new-invoice" class="button button-primary popup">New</a></h1>
+            <h1 class="wp-heading-inline">Invoice List <a data-w="900" href="new-invoice" class="button button-primary popup uttg-p-btn">New</a></h1>
             <hr>
             <?php
             $dataList = new DataList('sales', 'invoice', 1);

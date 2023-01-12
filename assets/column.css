@@ -23,8 +23,8 @@
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    margin-left: -25px;
-    margin-right: -25px;
+    margin-left: -15px;
+    margin-right: -15px;
 }
 
 /*Default Column*/
@@ -82,8 +82,8 @@
 .col-xs-11,
 .col-xs-12 {
     -webkit-box-flex: 0;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
     box-sizing: border-box;
 }
 

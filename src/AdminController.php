@@ -21,6 +21,24 @@ class AdminController
     {
         add_action("admin_menu", [$this, "AdminMenu"]);
         add_action('admin_enqueue_scripts', [$this, 'adminScript']);
+        add_action('wp_ajax_deleteData', [$this, 'deleteData']);
+    }
+
+
+    function deleteData()
+    {
+        global $wpdb;
+        if (isset($_POST['id']) && !empty($_POST['id']) && isset($_POST['tablename']) && !empty($_POST['tablename'])) {
+            $id = $_POST['id'];
+            $tablename = $_POST['tablename'];
+            $resp = $wpdb->delete($wpdb->prefix . $tablename, ['id' => $id]);
+            if ($resp) {
+                echo json_encode(['error' => false, 'message' => 'Data Deleted successfully']);
+            } else {
+                echo json_encode(['error' => true, 'message' => 'Data could not be Deleted,' . $wpdb->last_error]);
+            }
+        }
+        wp_die();
     }
 
     /**
@@ -30,6 +48,7 @@ class AdminController
     {
         //if (strpos($hook, 'uttara') !== false) {
         wp_enqueue_style('uttg-admin-style', __UTTG_ASSETS . 'admin-style.css');
+        wp_enqueue_style('uttg-elements-style', __UTTG_ASSETS . 'elements.css');
         wp_enqueue_style('uttg-admin-column', __UTTG_ASSETS . 'column.css');
         wp_enqueue_script('uttg-admin-script', __UTTG_ASSETS . 'admin-script.js', array('jquery'), '1.0');
         wp_localize_script('uttg-admin-script', 'uttg', array('ajax_url' => admin_url('admin-ajax.php')));

@@ -1,0 +1,360 @@
+:root {
+    --primary-color: #b2eed2;
+}
+
+/*poPUP cSS */
+.popup-wrap {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.popup-body {
+    background: linear-gradient(170deg, rgba(255, 255, 255, .4) 40%, rgba(217, 217, 217, .9));
+    max-width: 100vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 400px;
+    padding: 40px;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    max-height: 100%;
+    backdrop-filter: blur(8.8px);
+    box-shadow: 1px 2px 15px rgba(0, 0, 0, .1);
+}
+
+.popup-body .popup-inner {
+    overflow: hidden;
+    overflow-y: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 80px);
+    padding: 4px;
+    scrollbar-color: #d5d5d5 #ededed;
+    scrollbar-width: thin;
+}
+
+.popup-body .closePopup {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    line-height: 0;
+    font-size: 35px;
+    font-weight: 300;
+    color: #ff6565;
+    cursor: pointer;
+    padding: 16px 10px;
+}
+
+.popup-body .closePopup::after {
+    content: "";
+    width: 20px;
+    height: 1px;
+    background: #f22;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.popup-body .closePopup::before {
+    content: "";
+    width: 20px;
+    height: 1px;
+    background: #f22;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/** Custom Loader **/
+.working::after {
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: #04adff;
+    display: block;
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    animation-duration: 0.6s;
+    animation-name: leftRight;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate;
+}
+
+.working::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: #f27777;
+    display: block;
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    animation-duration: 0.6s;
+    animation-name: rightLeft;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate;
+}
+
+.working {
+    width: 25px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 18px;
+}
+
+@keyframes leftRight {
+    from {
+        transform: translate(0);
+    }
+
+    to {
+        transform: translate(20px);
+    }
+}
+
+@keyframes rightLeft {
+    from {
+        transform: translate(20px);
+    }
+
+    to {
+        transform: translate(0);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .popup-body {
+        top: 0;
+        left: 0;
+        transform: translate(0, 0);
+        height: 100%;
+        border: 0;
+        border-radius: 0;
+    }
+}
+
+/*eND OF pOPUP*/
+
+/*Notification*/
+.notifications {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 9999;
+    padding: 15px;
+}
+
+.notifications .notification {
+    display: flex;
+    padding: 5px 10px;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid;
+    border-radius: 3px;
+    margin: 5px 0;
+    -webkit-animation: anm_slide_right 0.2s ease-in-out normal;
+    animation: anm_slide_right 0.2s ease-in-out normal;
+    align-items: center;
+    padding-right: 32px;
+    position: relative;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    margin: 0;
+}
+
+.notification-icon {
+    padding-right: 10px;
+    box-sizing: border-box;
+    width: 35px;
+}
+
+.message {
+    display: block;
+    flex-basis: 100%;
+    flex-grow: 1;
+}
+
+.notification .close {
+    padding: 0 7px;
+    margin-left: 25px;
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 43%;
+    line-height: 0;
+    transform: translate(0, 0);
+}
+
+.notification.success {
+    color: #006005;
+    background: rgba(255, 255, 255, 0.78);
+    border-color: rgba(0, 255, 0, .4);
+}
+
+.notification.alert {
+    border-color: #b7b700;
+    color: #000;
+    background: #f0efa6;
+}
+
+.notification.warning {
+    color: yellow;
+}
+
+.notification.error {
+    color: red;
+    border-color: rgba(236, 96, 96, 0.4);
+}
+
+@keyframes anm_slide_right {
+    from {
+        transform: translate(-110%, 0);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+
+/*Confirm*/
+.confirm-modal {
+    position: fixed;
+    background: rgba(250, 250, 250, 0);
+    left: 50%;
+    top: 30%;
+    min-width: 300px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    backdrop-filter: blur(22px);
+}
+
+.confirm-modal .confirm-modal-content {
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-modal-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid #fff;
+}
+
+.confirm-modal-header .confirm-modal-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.confirm-modal-header .confirm-modal-close {
+    font-size: 30px;
+    line-height: 0;
+    position: absolute;
+    right: 0;
+    padding: 10px;
+    top: 8px;
+    color: #ff7e7e;
+    cursor: pointer;
+}
+
+.confirm-modal-message {
+    padding: 12px;
+}
+
+.confirm-modal-footer {
+    display: flex;
+    padding: 10px;
+}
+
+.confirm-modal-footer div {
+    padding: 7px 24px;
+    margin-right: 10px;
+    background: #ddd;
+    cursor: pointer;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 1px solid rgba(0, 0, 0, 0.19);
+}
+
+.confirm-modal-footer div.confirm-modal-yes {
+    background: var(--primary-color);
+    color: #484848;
+}
+
+/*Dialog*/
+.dialog-box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #257fb3;
+    border-radius: 4px;
+    min-width: 250px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    z-index: 9999;
+}
+
+.dialog-box .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 10px;
+}
+
+.dialog-box .header .title-wrap {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.dialog-box .header .close-button {
+    font-size: 47px;
+    line-height: 0;
+    position: absolute;
+    right: 0;
+    padding: 10px;
+    top: 0;
+    color: #ff7e7e;
+    cursor: pointer;
+}
+
+.dialog-box .body {
+    overflow-y: auto;
+    padding: 10px;
+    max-height: 400px;
+}
+
+.dialog-box .actions {
+    display: flex;
+    padding: 10px;
+}
+
+.dialog-box .actions .action {
+    padding: 4px 24px;
+    margin-right: 10px;
+    background: #ddd;
+    cursor: pointer;
+}
+
+.dialog-box .actions .action.btn-primary {
+    background: var(--primary-color);
+}

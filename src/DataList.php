@@ -76,7 +76,7 @@ class DataList
                     'class' => 'delete-data',
                     'href' => "javascript:void(0)",
                     'data-id' => "%id",
-                    'data-type' => $pageUrl,
+                    'data-type' => $table,
                     'onclick' => 'deleteData(this)'
                 ]
 
@@ -116,8 +116,10 @@ class DataList
     public function getData()
     {
         $this->conditionBuilder();
+        if (empty($this->conditionStr))
+            $this->conditionStr = 1;
+
         $sql = "SELECT $this->selectedFields FROM $this->table WHERE $this->conditionStr ORDER BY $this->primary_key DESC LIMIT $this->offset,$this->itemPerPage";
-        //var_dump($sql);
         $this->data = $this->db->get_results($sql);
     }
 
@@ -127,7 +129,11 @@ class DataList
     public function paginate()
     {
         $this->conditionBuilder();
-        $this->totalItems = $this->db->get_var("SELECT COUNT(*) as total FROM $this->table WHERE $this->conditionStr");
+        if (empty($this->conditionStr))
+            $this->conditionStr = 1;
+
+        $total = $this->db->get_var("SELECT COUNT(*) as total FROM $this->table WHERE $this->conditionStr");
+        $this->totalItems = $total ? $total : 0;
 
         if ($this->totalItems > 0 && $this->totalItems > $this->itemPerPage) {
             $this->totalPages = ceil($this->totalItems / $this->itemPerPage);
