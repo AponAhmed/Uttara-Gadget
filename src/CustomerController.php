@@ -17,6 +17,14 @@ class CustomerController
         add_action('wp_ajax_new-customer_save', [$this, 'create_new_customer_store']);
     }
 
+    public static function allCustomers()
+    {
+        global $wpdb;
+        $sql = "SELECT * FROM $wpdb->prefix" . self::$table . " WHERE 1 order by id desc";
+        $customers = $wpdb->get_results($sql);
+        return $customers;
+    }
+
     function create_new_customer_store()
     {
         global $wpdb;

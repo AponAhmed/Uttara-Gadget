@@ -1,3 +1,6 @@
+let timeout;
+let invoiceTotal = 0;
+let countQty = 0;
 //POPUP
 class Popup {
     constructor($) {
