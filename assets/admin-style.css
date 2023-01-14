@@ -312,3 +312,24 @@
     border-radius: 4px;
     padding: 4px;
 }
+
+.noborder {
+    border: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    height: 18px;
+    background: transparent !important;
+}
+
+.noborder:focus {
+    outline: 0 !important;
+    box-shadow: 0 0 0 0 !important;
+    border: none !important;
+}
+
+.removeinvItem {
+    color: #f00;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 0;
+}

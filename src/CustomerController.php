@@ -25,6 +25,17 @@ class CustomerController
         return $customers;
     }
 
+    public static function getCustomer($id)
+    {
+        global $wpdb;
+        $sql = "SELECT * FROM $wpdb->prefix" . self::$table . " WHERE id=$id";
+        $customers = $wpdb->get_results($sql);
+        if ($customers) {
+            return $customers[0];
+        }
+        return false;
+    }
+
     function create_new_customer_store()
     {
         global $wpdb;

@@ -43,7 +43,8 @@ class Init
             `id` INT NOT NULL AUTO_INCREMENT , 
             `customer_id` INT NOT NULL , 
             `sales_value` FLOAT NULL DEFAULT NULL , 
-            `sales_value_receive` FLOAT NULL DEFAULT NULL , 
+            `sales_value_receive` FLOAT NULL DEFAULT NULL ,
+            `sales_value_discount` FLOAT NULL DEFAULT NULL , 
             `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
             PRIMARY KEY (`id`)
             ) $charset_collate;";

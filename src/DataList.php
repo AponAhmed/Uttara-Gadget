@@ -27,11 +27,11 @@ class DataList
     public $primary_key = 'id';
     public $selectedFields = "*";
     /**
-     * Column Value Filter
+     * Column Value Filters
      * Example: ['db-field'=> calback]
      * @var array
      */
-    public array $filter;
+    public array $filters;
     private $page = '';
 
     public int $currentPage = 1;
@@ -44,7 +44,7 @@ class DataList
 
     public $conditions = [];
     private $data;
-
+    public $leftJoin = []; //[table,local,foreign]
 
     public function __construct($table = '', $pageUrl = '', $itemPerPage = 15)
     {
@@ -53,7 +53,7 @@ class DataList
         $this->table = $wpdb->prefix . $table;
         $this->page = $pageUrl;
         $this->columns = [];
-        $this->filter = [];
+        $this->filters = [];
 
 
         $this->itemPerPage = $itemPerPage;
@@ -118,8 +118,15 @@ class DataList
         $this->conditionBuilder();
         if (empty($this->conditionStr))
             $this->conditionStr = 1;
-
-        $sql = "SELECT $this->selectedFields FROM $this->table WHERE $this->conditionStr ORDER BY $this->primary_key DESC LIMIT $this->offset,$this->itemPerPage";
+        $leftJoin = "";
+        if (is_array($this->leftJoin) && count($this->leftJoin) > 0) {
+            foreach ($this->leftJoin as $join) {
+                $jTble = $this->db->prefix . $join[0];
+                $leftJoin .= " Left join $jTble on $this->table.$join[2] = $jTble.$join[1] ";
+            }
+        }
+        $sql = "SELECT $this->selectedFields FROM $this->table $leftJoin WHERE $this->conditionStr ORDER BY $this->table.$this->primary_key DESC LIMIT $this->offset,$this->itemPerPage";
+        //var_dump($sql);
         $this->data = $this->db->get_results($sql);
     }
 
@@ -196,6 +203,15 @@ class DataList
         return $htm;
     }
 
+    function filterData($field, $val, $data)
+    {
+        if (isset($this->filters[$field])) {
+            $callback = $this->filters[$field];
+            $val = $callback($val, $data);
+        }
+        return $val;
+    }
+
     public function generateTbody()
     {
         $htm = "<tbody>";
@@ -204,6 +220,7 @@ class DataList
                 $htm .= "<tr>";
                 foreach ($this->columns as $key => $val) {
                     $value = $row->$key;
+                    $value = $this->filterData($key, $value, $row);
                     $htm .= "<td title=\"$val\">$value</td>";
                 }
                 if (count($this->actions) > 0) {
