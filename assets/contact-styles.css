@@ -286,3 +286,128 @@ textarea.contactFormField {
         z-index: 9999999;
     }
 }
+
+/**Exchange Style*/
+/*Input */
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+}
+
+.form__field {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #9b9b9b !important;
+    outline: 0;
+    padding: 7px 0;
+    transition: border-color 0.2s;
+}
+
+.form__group input {
+    background: transparent !important;
+    padding: 3px !important;
+    box-shadow: none !important;
+}
+
+.form__group input:focus {
+    background: transparent;
+    outline: none;
+}
+
+.form__field::-moz-placeholder {
+    color: transparent;
+}
+
+.form__field:-ms-input-placeholder {
+    color: transparent;
+}
+
+.form__field::placeholder {
+    color: transparent;
+}
+
+.form__field:-moz-placeholder-shown~.form__label {
+    cursor: text;
+    top: 22px;
+}
+
+.form__field:-ms-input-placeholder~.form__label {
+    cursor: text;
+    top: 22px;
+}
+
+.form__field:placeholder-shown~.form__label {
+    cursor: text;
+    top: 22px;
+}
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    color: #11998e;
+    font-size: 12px;
+}
+
+.form__field:focus {
+    border-width: 1px;
+    -o-border-image: linear-gradient(to right, #11998e, #38ef7d);
+    border-image: linear-gradient(to right, #11998e, #38ef7d);
+    border-image-slice: 1;
+}
+
+.form__field:focus~.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    color: #11998e;
+    font-size: 12px;
+}
+
+/* reset input */
+.form__field:required,
+.form__field:invalid {
+    box-shadow: none;
+}
+
+.exc-input {
+    width: 100%;
+    padding: 0 15px;
+}
+
+.flex-row {
+    display: flex;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.type-of-select {
+    width: 180px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    margin-left: 23px;
+    color: #333;
+    font-weight: normal;
+    border-bottom: 1px solid #9b9b9b;
+}
+
+.mediaUploadPlaceholder {
+    width: 100px;
+    display: block;
+    padding: 25px;
+    border: 1px dashed #333;
+    border-radius: 6px;
+}

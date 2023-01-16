@@ -17,6 +17,7 @@ use Aponahmed\Uttaragedget\src\Frontend;
 use Aponahmed\Uttaragedget\src\Init;
 use Aponahmed\Uttaragedget\src\Contact;
 use Aponahmed\Uttaragedget\src\CustomerController;
+use Aponahmed\Uttaragedget\src\ExchangeController;
 use Aponahmed\Uttaragedget\src\InvoiceController;
 
 define('__UTTG_DIR', dirname(__FILE__));
@@ -37,6 +38,7 @@ class Uttg
     public $contactSystem;
     public $invoice;
     public $customer;
+    public $exchanger;
 
     public function __construct()
     {
@@ -46,9 +48,10 @@ class Uttg
         $this->contactSystem = new Contact();
         $this->invoice = new InvoiceController();
         $this->customer = new CustomerController();
+        $this->exchanger = new ExchangeController();
         //Init Admin And Frontend Controller
         if (is_admin()) {
-            $this->AdminController = new AdminController();
+            $this->AdminController = new AdminController($this->contactSystem);
         } else {
             $this->AdminController = new Frontend();
         }

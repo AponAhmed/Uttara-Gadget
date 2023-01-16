@@ -70,7 +70,7 @@ class Init
             `name` VARCHAR(256) NULL , 
             `mobile_number` VARCHAR(20) NOT NULL , 
             `email_address` VARCHAR(256) NULL , 
-            `product_type` ENUM('Mobile','Tab','Laptop','Accessories') NULL DEFAULT NULL , 
+            `product_type` ENUM('Smart-Phone','Tab','Laptop','Accessories') NULL DEFAULT NULL , 
             `type` ENUM('Sale','Exchange') NOT NULL , 
             `details_referance` TEXT  NULL , 
             `midia_referance` TEXT  NULL , 

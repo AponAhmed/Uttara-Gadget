@@ -17,6 +17,13 @@ class CustomerController
         add_action('wp_ajax_new-customer_save', [$this, 'create_new_customer_store']);
     }
 
+    public static function count()
+    {
+        global $wpdb;
+        $rowcount = $wpdb->get_var("SELECT count(*) FROM $wpdb->prefix" . self::$table . " WHERE 1 order by id desc");
+        return $rowcount;
+    }
+
     public static function allCustomers()
     {
         global $wpdb;
@@ -147,7 +154,6 @@ class CustomerController
             <?php
             $dataList = new DataList(self::$table, 'customer', 15);
             $dataList->setColumn([
-                'id' => "#",
                 'name' => 'Name',
                 'mobile' => 'Mobile',
                 'email' => 'Email',

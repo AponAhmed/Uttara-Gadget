@@ -15,13 +15,15 @@ use Aponahmed\Uttaragedget\src\ExchangeController;
 class AdminController
 {
 
-    public $contactAdmin;
+    public $contactSys;
     //put your code here
-    public function __construct()
+    public function __construct($contactSys)
     {
+        $this->contactSys = $contactSys;
         add_action("admin_menu", [$this, "AdminMenu"]);
         add_action('admin_enqueue_scripts', [$this, 'adminScript']);
         add_action('wp_ajax_deleteData', [$this, 'deleteData']);
+        add_action('wp_ajax_option_save', [$this, 'option_save']);
     }
 
 
@@ -55,6 +57,32 @@ class AdminController
         //}
     }
 
+    static function getOption()
+    {
+        $options = json_decode(get_option('uttg-options'), true);
+        $defaults = [
+            'name' => '',
+            'address' => '',
+            'invoice_notes' => '',
+            'currency' => 'TK',
+            'prefix' => 'UT1054-'
+        ];
+        $options = array_merge($defaults, $options);
+        return $options;
+    }
+
+    function option_save()
+    {
+        $data = array();
+        parse_str($_POST['fData'], $data);
+        if (isset($data['uttg-options'])) {
+            update_option('uttg-options', json_encode($data['uttg-options']));
+        }
+        echo 1;
+        wp_die();
+    }
+
+
     /**
      * Menu Register for Admin Page
      */
@@ -70,14 +98,15 @@ class AdminController
             [InvoiceController::class, 'invoiceList'] //Calback
         );
 
-        add_submenu_page(
-            "uttara-gadget", //$parent_slug
-            "Exchange", //$page_title
-            "Exchange", //$menu_title
-            "manage_options", //$capability
-            "exchange", //$menu_slug
-            [ExchangeController::class, 'exchangeList'] //Calback
-        );
+        // add_submenu_page(
+        //     "uttara-gadget", //$parent_slug
+        //     "Exchange", //$page_title
+        //     "Exchange", //$menu_title
+        //     "manage_options", //$capability
+        //     "exchange", //$menu_slug
+        //     [ExchangeController::class, 'exchangeList'] //Calback
+        // );
+
 
         add_submenu_page(
             "uttara-gadget", //$parent_slug
@@ -86,6 +115,23 @@ class AdminController
             "manage_options", //$capability
             "customer", //$menu_slug
             [CustomerController::class, 'customerList'] //Calback
+        );
+        add_submenu_page(
+            "uttara-gadget", //$parent_slug
+            "Settings", //$page_title
+            "Settings", //$menu_title
+            "manage_options", //$capability
+            "uttg-settings", //$menu_slug
+            [Views::class, 'settingsView'] //Calback
+        );
+
+        add_submenu_page(
+            "uttara-gadget", //$parent_slug
+            "Mail Config", //$page_title
+            "Mail Config", //$menu_title
+            "manage_options", //$capability
+            "mail-admin", //$menu_slug
+            [$this->contactSys->admin, 'optionPage'] //Calback
         );
     }
 }

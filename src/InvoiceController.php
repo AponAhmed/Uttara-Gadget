@@ -8,6 +8,7 @@ use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 use Aponahmed\Uttaragedget\src\NumberFormater;
+use Aponahmed\Uttaragedget\src\AdminController;
 
 /**
  * Description of InvoiceController
@@ -30,11 +31,21 @@ class InvoiceController
 
     function invoiceNumber($id)
     {
-        return "UT1054-$id";
+        $options = AdminController::getOption();
+
+        return $options['prefix'] . $id;
+    }
+
+    public static function count()
+    {
+        global $wpdb;
+        $rowcount = $wpdb->get_var("SELECT count(*) FROM $wpdb->prefix" . self::$table . " WHERE 1 order by id desc");
+        return $rowcount;
     }
 
     function download_invoice($id)
     {
+        $options = AdminController::getOption();
         $data = $this->getInvoiceData($id);
         $customer = CustomerController::getCustomer($data['customer_id']);
         $itemsData = $this->getInvoiceItems($id);
@@ -48,9 +59,15 @@ class InvoiceController
 
         $headerImg = __UTTG_ASSETS . "invoice-logo.png";
         $paidImage = __UTTG_ASSETS . "paid-logo.png";
-        $address = "---"; //
-        $html = "
-        <style>
+        $address = nl2br($options['address']); //
+
+        $paid = "";
+        $due = ($data['sales_value'] - $data['sales_value_discount'] - $data['sales_value_receive']); //sales_value_receive
+        if ($due <= 0) {
+            $paid = "  <div><img style='margin-left:10px;height:100px;position: absolute;top:250px;left:300px;z-index:999' src='$paidImage'/></div>";
+        }
+
+        $html = "<style>
         .tbl_itm{color:#333333;border-collapse: collapse; border-spacing: 0; margin-bottom:20px;border-color:#333333;}
         .tbl_itm tr th{font-size:12px;font-weight:300;padding:5px;background:#EBEBEB;}
         .tbl_itm tr td, .tbl_itm tr th {
@@ -82,11 +99,12 @@ class InvoiceController
                     </td>
                     <td width='350' align='left'>
                         <div style='font-size:13px;text-align:right;line-height:1.2'>
-                            $address
+                            <strong style='margin:0;line-height:15px;font-weight:bold;font-size:18px'>$options[name]</strong>
+                            <p style='line-height:18px;'>$address</p>
                         </div>
                     </td>
                 </tr>
-                <tr><td colspan='2'><div style='text-align:center;border-bottom:1px solid #eee;font-size:20px;color:#f00;font-weight:bold;padding:10px'>Invoice</div></td></tr>
+                <tr><td colspan='2'><div style='text-align:center;border-bottom:1px solid #eee;font-size:20px;color:#21356e;font-weight:bold;padding:10px'>Invoice</div></td></tr>
                 <tr>
                     <td colspan='2'>
                         $tableS
@@ -124,9 +142,7 @@ class InvoiceController
                     </td>
                 </tr>
                 </table>
-
-                <div><img style='margin-left:10px;height:100px;position: absolute;top:250px;left:300px;z-index:999' src='$paidImage'/></div>
-
+                $paid
 		</page_header>";
         //Footer
         $siteUrl = site_url();
@@ -159,17 +175,17 @@ class InvoiceController
                 </tr>";
         }
         $html .= "<tr>
-                    <td class='bnL bnB' style='text-align:right' colspan='2'><strong>Total : </strong></td>
+                    <td class='bnL bnB' style='text-align:right' colspan='2'><strong>Total ($options[currency]) : </strong></td>
                     <td  style='text-align:center'><strong>$q</strong></td>
                     <td style='text-align:right'><strong>" . number_format($total, 2) . "</strong></td>
                 </tr>";
         if ($data['sales_value_discount'] != 0) {
             $html .= "<tr>
-                    <td class='bnL bnB bnR' style='text-align:right' colspan='3'>Discount : </td>
+                    <td class='bnL bnB bnR' style='text-align:right' colspan='3'>Discount ($options[currency]) : </td>
                     <td class='bnL bnR' style='text-align:right'>" . number_format($data['sales_value_discount'], 2) . "</td>
                 </tr>";
             $html .= "<tr>
-                    <td class='bnL bnB bnR' style='text-align:right' colspan='3'><strong>Total : </strong></td>
+                    <td class='bnL bnB bnR' style='text-align:right' colspan='3'><strong>Total ($options[currency]) : </strong></td>
                     <td class='bnR' style='text-align:right'><strong>" . number_format($total - $data['sales_value_discount'], 2) . "</strong></td>
                 </tr>";
         }
@@ -178,8 +194,8 @@ class InvoiceController
 
         $nf = new NumberFormater();
         $inWord = $nf->convertNumber(number_format($total - $data['sales_value_discount'], 2));
-        $html .= "<div style='text-align:center;font-size:12px;background:#eee;border:1px solid #ddd;padding:5px'>IN WORD : " . ucwords($inWord) . " Only.</div>";
-
+        $html .= "<div style='text-align:center;font-size:12px;background:#eee;border:1px solid #ddd;padding:5px'>IN WORD : " . ucwords($inWord) . " $options[currency] Only.</div>";
+        $html .= "<br><p style='font-size:10px;line-height:12px;color:#444;font-weighr:normal'>" . nl2br($options['invoice_notes']) . "</p>";
         $html .= "</page>"; //Page Close
 
         try {
@@ -494,7 +510,7 @@ class InvoiceController
                                     ?>
                                     <tr>
                                         <td colspan="2" style="text-align: right;">Total</td>
-                                        <td><strong class="totalQty">0</strong></td>
+                                        <td><strong class="totalQty"><?php echo $q  ?></strong></td>
                                         <td>
                                             <strong class="totalvalue"><?php echo $this->printVal($data, 'sales_value', '0') ?></strong>
                                             <input type="hidden" name="data[sales_value]" class="totalvalueIn" readonly value="<?php echo $this->printVal($data, 'sales_value', '0') ?>">
@@ -632,7 +648,7 @@ class InvoiceController
 
             $dataList->filters = [
                 'sales_value_receive' => function ($colVal, $row) {
-                    $sValue = $row->sales_value - $row->sales_value_discount;
+                    $sValue = $row->sales_value - $row->sales_value_discount; //sales_value_receive
                     return number_format($sValue - $colVal, 2);
                 },
                 'sales_value' => function ($colVal, $row) {
@@ -644,6 +660,7 @@ class InvoiceController
             $dataList->addAction('downloaded', [
                 'label' => 'Downloaded',
                 'atts' => [
+                    'target' => '_blank',
                     'href' => "admin.php?page=invoice&download=invoice&id=%id",
                 ]
             ]);

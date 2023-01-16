@@ -3,6 +3,16 @@
     Author     : Apon
 */
 
+/**Tab
+*/
+.tab-pane {
+    display: none;
+}
+
+.tab-content {
+    padding: 25px 15px;
+}
+
 .menu-top.toplevel_page_uttara-gadget img {
     max-width: 18px;
     opacity: 1 !important;
@@ -14,6 +24,9 @@
     filter: grayscale(0%);
 }
 
+.utatra-gadget {
+    padding-top: 122px;
+}
 
 .uttg-p-btn {
     display: flex !important;
@@ -27,6 +40,14 @@
     border: 1px solid rgba(0, 0, 0, .5) !important;
     background: rgba(95, 234, 169, 0.43) !important;
     color: #484848 !important;
+}
+
+.bt1 {
+    border-top: 1px solid #e3e3e3;
+}
+
+.mt0 {
+    margin-top: 0;
 }
 
 .pop-title {
@@ -76,6 +97,10 @@
     align-items: center;
     margin-right: 2%;
     flex-grow: 1;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, .2);
+    position: relative;
 }
 
 .box:last-child {
@@ -94,12 +119,40 @@
     display: block;
 }
 
-.box-title label {
+.box-title label,
+.box-title label a {
     font-size: 16px;
     margin-top: 10px;
     color: #fff;
+    text-decoration: none;
 }
 
+.box .box-icon svg {
+    transition: all .1s;
+}
+
+.box:hover .box-icon svg {
+    transform: scale(1.5);
+}
+
+.box-new-btn {
+    width: 25px;
+    height: 25px;
+    background: rgba(255, 255, 255, .2);
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    color: #fff;
+    backdrop-filter: blur(8px);
+    right: 10px;
+    top: 10px;
+    position: absolute;
+    transition: .1s;
+}
+
+.box-new-btn:hover {
+    transform: scale(1.5);
+    color: #fff;
+}
 
 /*Data List*/
 

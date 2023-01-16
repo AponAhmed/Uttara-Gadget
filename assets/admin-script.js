@@ -350,3 +350,23 @@ function deleteData(_this) {
         }
     });
 }
+
+/**TAB */
+jQuery(function ($) {
+    $(".tab-wrap").each(function () {
+        let _wrap = this;
+        $(_wrap).find('.tab-pane').hide();
+        $(_wrap).find('.tab-pane').first().show();
+        $(_wrap).find('.nav-tab').click(function (e) {
+            e.preventDefault();
+            $(_wrap).find('.tab-pane').hide();
+            $(_wrap).find('.nav-tab').removeClass('nav-tab-active');
+            $(this).addClass('nav-tab-active');
+            let terget = $(this).attr('href');
+            $(terget).show();
+        });
+    });
+});
+
+
+

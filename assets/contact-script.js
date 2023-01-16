@@ -6,9 +6,43 @@ function getRandom() {
     return Math.ceil(Math.random() * 20)
 }
 
+jQuery(document).ready(function () {
+    excEvt();
+});
+
+function excEvt() {
+    jQuery("#exchangeForm").on('submit', function (event) {
+        event.preventDefault();
+        let frm = event.target;
+        let loader = "<span class='spinLoaderexch'><i></i><i></i><i></i><i></i><i></i><i></i></span>";
+        jQuery("#exchangeSubmit").html("Please Wait...");
+        jQuery("#exchangeSubmit").attr('type', 'button');//To Prevent Resend when already Processing
+        var data = {
+            action: "exchange_request",
+            data: jQuery("#exchangeForm").serialize(),
+        };
+        jQuery.post(contactAjaxObj.ajaxurl, data, function (response) {
+            jQuery(".spinLoaderexch").remove();
+            var obj = JSON.parse(response);
+            if (obj.error === false) {
+                jQuery('#exchangeForm')[0].reset();
+                jQuery(".errMsg").html(obj.message).css("color", "green");
+                jQuery("#exchangeSubmit").html(" Requested !");
+                setTimeout(function () {
+                    jQuery("#exchangeSubmit").html(" Submit Another ");
+                }, 2000);
+            } else {
+                jQuery(".errMsg").html(obj.message).css("color", "red");
+                jQuery("#exchangeSubmit").attr('type', 'submit');
+            }
+
+        });
+    });
+}
+
 function createSum() {
     var randomNum1 = getRandom(),
-            randomNum2 = getRandom();
+        randomNum2 = getRandom();
     total = randomNum1 + randomNum2;
     jQuery("#question").text(randomNum1 + " + " + randomNum2 + "=");
     jQuery('#success, #fail').hide();
@@ -17,9 +51,9 @@ function createSum() {
 
 function checkInput() {
     var input = jQuery("#ans").val(),
-            slideSpeed = 200,
-            hasInput = !!input,
-            valid = hasInput & input == total;
+        slideSpeed = 200,
+        hasInput = !!input,
+        valid = hasInput & input == total;
     if (valid) {
         jQuery(".question").css("border-color", "green")
     } else {

@@ -45,7 +45,7 @@ class ContactAdmin
     public function adminInit()
     {
         //Admin menu
-        add_action("admin_menu", [$this, "gapi_contact_admin_menu"]);
+        //add_action("admin_menu", [$this, "gapi_contact_admin_menu"]);
     }
 
     /**
