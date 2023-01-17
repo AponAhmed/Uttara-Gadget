@@ -289,6 +289,53 @@ textarea.contactFormField {
 
 /**Exchange Style*/
 /*Input */
+.uploadLabel {
+    font-size: 14px;
+}
+
+.image-item {
+    width: 110px;
+    height: 110px;
+    background: #f4f4f4;
+    border-radius: 4px;
+    margin-right: 10px;
+    position: relative;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.uploadedMedia {
+    display: flex;
+}
+
+.image-item img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.image-item span {
+    position: absolute;
+    right: 5px;
+    top: 4px;
+    z-index: 999;
+    background: rgba(255, 1, 1, 0.32);
+    line-height: 1;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 25px;
+    font-size: 24px;
+    color: #fff;
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+}
+
 .form__group {
     position: relative;
     padding: 15px 0 0;
@@ -374,6 +421,10 @@ textarea.contactFormField {
     box-shadow: none;
 }
 
+.aln-btm {
+    align-items: self-end;
+}
+
 .exc-input {
     width: 100%;
     padding: 0 15px;
@@ -408,6 +459,10 @@ textarea.contactFormField {
     width: 100px;
     display: block;
     padding: 25px;
-    border: 1px dashed #333;
+    border: 1px dashed #aeaeae;
     border-radius: 6px;
+}
+
+.mediaUploadPlaceholder svg {
+    color: #b3b3b3;
 }

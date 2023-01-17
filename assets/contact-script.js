@@ -8,7 +8,42 @@ function getRandom() {
 
 jQuery(document).ready(function () {
     excEvt();
+
 });
+
+function uploadImage(_this) {
+
+    var fd = new FormData();
+    var files = jQuery(_this)[0].files[0];
+    fd.append('exchange-image', files);
+    fd.append('action', 'upload_divices_image');
+    //Add New Block in Queue
+    let uid = "as" + Date.now();
+    jQuery("#uploadNew").before(`<div class='uploading image-item' id='${uid}'>Loading...</div>`);
+    jQuery.ajax({
+        url: contactAjaxObj.ajaxurl,
+        type: "POST",
+        data: fd,
+        processData: false,
+        contentType: false,
+        success: function (data, textStatus, jqXHR) {
+            data = JSON.parse(data);
+            if (data.type == 'error') {
+                jQuery(".errMsg").html(data.message).css("color", "red");
+            } else {
+                //console.log(uid);
+                jQuery("#" + uid).html(`
+                <span onclick="jQuery(this).parent().remove()">&times;</span>
+                <img src="${data.src}" alt='media-image'>
+                <input type="hidden" name="exch-images[]" value="${data.name}">
+                `);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            //if fails     
+        }
+    });
+}
 
 function excEvt() {
     jQuery("#exchangeForm").on('submit', function (event) {
@@ -28,6 +63,7 @@ function excEvt() {
                 jQuery('#exchangeForm')[0].reset();
                 jQuery(".errMsg").html(obj.message).css("color", "green");
                 jQuery("#exchangeSubmit").html(" Requested !");
+                jQuery(".image-item").remove();
                 setTimeout(function () {
                     jQuery("#exchangeSubmit").html(" Submit Another ");
                 }, 2000);

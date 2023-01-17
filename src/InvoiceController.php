@@ -175,7 +175,7 @@ class InvoiceController
                 </tr>";
         }
         $html .= "<tr>
-                    <td class='bnL bnB' style='text-align:right' colspan='2'><strong>Total ($options[currency]) : </strong></td>
+                    <td class='bnL bnB' style='text-align:right' colspan='2'><strong>Total : </strong></td>
                     <td  style='text-align:center'><strong>$q</strong></td>
                     <td style='text-align:right'><strong>" . number_format($total, 2) . "</strong></td>
                 </tr>";

@@ -188,7 +188,7 @@ class Views
     ?>
         <form id="exchangeForm">
             <div class="exchange-wrapper">
-                <div class="exchange-title">Exchange or Sale</div>
+                <!-- <div class="exchange-title">Exchange or Sale</div> -->
                 <div class="exchange-input-area">
                     <div class="flex-row">
                         <div class="exc-input">
@@ -197,22 +197,14 @@ class Views
                                 <label for="name" class="form__label">Your Name</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="flex-row">
                         <div class="exc-input">
                             <div class="form__group field">
                                 <input type="text" class="form__field" placeholder="Your Name" name="exch[mobile_number]" id="excMobile" required="">
                                 <label for="excMobile" class="form__label">Mobile Number</label>
                             </div>
                         </div>
-                        <div class="exc-input">
-                            <div class="form__group field">
-                                <input type="email" class="form__field" placeholder="Your Name" name="exch[email_address]" id="email_address">
-                                <label for="email_address" class="form__label">Email Address (Optional)</label>
-                            </div>
-                        </div>
                     </div>
-                    <div class="flex-row mt-10 mb-10">
+                    <div class="flex-row mt-10 mb-10 aln-btm">
                         <div class="exc-input">
                             <label><input name="exch[type]" value="Exchange" type='radio'>&nbsp;Exchange</label>&nbsp;&nbsp;&nbsp;
                             <label><input name="exch[type]" value="Sale" type='radio'>&nbsp;Sale</label>
@@ -223,16 +215,22 @@ class Views
                                 <option>Accessories</option>
                             </select>
                         </div>
+                        <div class="exc-input">
+                            <div class="form__group field">
+                                <input type="text" class="form__field" placeholder="Your Name" name="exch[model]" id="modelofd">
+                                <label for="modelofd" class="form__label">Model</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex-row mt-10 mb-10">
                         <div class="exc-input">
-                            <textarea class="exch-details" name="exch['details_referance]" placeholder="If you want to share something (optional)"></textarea>
+                            <textarea class="exch-details" name="exch[details_referance]" placeholder="If you want to share something (optional)"></textarea>
                         </div>
                     </div>
                     <div class="flex-row mt-10 mb-10">
                         <div class="exc-input">
                             <div class="exc-media-reference">
-                                <input accept="image/png, image/jpeg, image/jpg, image/gif" type="file" style="display: none;" id="uploadMedia">
+                                <input onchange="uploadImage(this)" accept="image/png, image/jpeg, image/jpg, image/gif" type="file" style="display: none;" id="uploadMedia">
                                 <div class="uploadedMedia">
                                     <!-- Uploaded Image will append here -->
                                     <label id="uploadNew" for="uploadMedia" class="mediaUploadPlaceholder">
@@ -248,12 +246,72 @@ class Views
                             </div>
                         </div>
                     </div>
+                    <label class="uploadLabel">Upload Image of Your Device with Different angle of view, Maximum 3 Image</label>
                     <hr>
+                    <p class="errMsg"></p>
                     <button type="submit" class="btn btn-primary" id="exchangeSubmit">Submit</button>
                 </div>
             </div>
         </form>
-<?php
+    <?php
         return ob_get_clean();
     }
+
+    static function view_exchange_proposer()
+    {
+        if (!isset($_POST['id'])) {
+            echo "Exchange Proposal Not Available";
+            wp_die();
+        }
+
+        $exchData = ExchangeController::get($_POST['id']);
+    ?>
+        <div class="sale-exchange-proposal">
+            <h3 class="se-title"><?php echo $exchData->type ?> Proposal from <?php echo  $exchData->name ?></h3>
+            <hr>
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td>: <strong><?php echo $exchData->name ?></strong></td>
+                </tr>
+                <tr>
+                    <td>Mobile</td>
+                    <td>: <strong><?php echo $exchData->mobile_number ?></strong></td>
+                </tr>
+                <tr>
+                    <td>Type of Deal</td>
+                    <td>: <strong><?php echo $exchData->type ?></strong></td>
+                </tr>
+            </table>
+            <br>
+            <strong>Product Details</strong>
+            <hr>
+            <label>Product Type : <strong><?php echo $exchData->product_type ?></strong></label><br>
+            <label>Brand or Model : <strong><?php echo $exchData->model ?></strong></label><br>
+            <hr>
+            <div class="exch-productImages">
+                <?php
+                $mediaStr = json_decode($exchData->midia_referance, true);
+                if (is_array($mediaStr) && count($mediaStr) > 0) {
+                    foreach ($mediaStr as $imageName) {
+                        $src = content_url() . "/exchange/" . $imageName;
+                        echo "<div class='image-item'><a href='$src' target='_blank'><img src=\"$src\" alt=\"$imageName\"></a></div>";
+                    }
+                }
+                ?>
+            </div>
+            <strong style="margin-top: 20px;margin-bottom: 10px;display: block;">Message From Customer</strong>
+            <blockquote style="border-left: 5px solid #f06f6f;padding: 10px;margin: 0;background: #fff;"><?php echo $exchData->details_referance ?></blockquote>
+            <!-- midia_referance -->
+        </div>
+<?php
+        wp_die();
+    }
 }
+
+// <div class="exc-input">
+//                             <div class="form__group field">
+//                                 <input type="email" class="form__field" placeholder="Your Name" name="exch[email_address]" id="email_address">
+//                                 <label for="email_address" class="form__label">Email Address (Optional)</label>
+//                             </div>
+//                         </div>

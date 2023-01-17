@@ -4,13 +4,13 @@
 
 /*poPUP cSS */
 .popup-wrap {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     background: rgba(0, 0, 0, 0.1);
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: 9999999;
 }
 
 .popup-body {
@@ -27,6 +27,12 @@
     max-height: 100%;
     backdrop-filter: blur(8.8px);
     box-shadow: 1px 2px 15px rgba(0, 0, 0, .1);
+}
+
+.popup-body hr {
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .popup-body .popup-inner {
